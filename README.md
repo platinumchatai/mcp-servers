@@ -54,9 +54,9 @@ Key features:
 
 ## Usage
 
-1. Install dependencies:
+1. Clone or Fork Server
 ```bash
-npm install @modelcontextprotocol/server-openai @modelcontextprotocol/server-flux
+git clone https://github.com/AllAboutAI-YT/mcp-servers.git
 ```
 
 2. Set up environment variables in your .env file:
