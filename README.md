@@ -1,1 +1,78 @@
-IyBNQ1AgU2VydmVycyAtIE9wZW5BSSBhbmQgRmx1eCBJbnRlZ3JhdGlvbgoKVGhpcyByZXBvc2l0b3J5IGNvbnRhaW5zIE1DUCAoTW9kZWwgQ29udGV4dCBQcm90b2NvbCkgc2VydmVycyBmb3IgaW50ZWdyYXRpbmcgd2l0aCBPcGVuQUnigJlzIG8xIG1vZGVsIGFuZCBGbHV4IGNhcGFiaWxpdGllcy4KCiMjIFNlcnZlciBDb25maWd1cmF0aW9ucwoKIyMjIE9wZW5BSSBvMSBNQ1AgU2VydmVyCgpUaGUgbzEgc2VydmVyIGVuYWJsZXMgaW50ZXJhY3Rpb24gd2l0aCBPcGVuQUnigJlzIG8xIHByZXZpZXcgbW9kZWwgdGhyb3VnaCB0aGUgTUNQIHByb3RvY29sLgoKYGBganNvbgp7CiAgIm1jcFNlcnZlcnMiOiB7CiAgICAib3BlbmFpIjogewogICAgICAiY29tbWFuZCI6ICJucHgiLAogICAgICAiYXJncyI6IFsiLXkiLCAiQG1vZGVsY29udGV4dHByb3RvY29sL3NlcnZlci1vcGVuYWkiXSwKICAgICAgImVudiI6IHsKICAgICAgICAiT1BFTkFJX0FQSV9LRVkiOiAiPFlPVVJfT1BFTkFJX0FQSV9LRVk+IgogICAgICB9CiAgICB9CiAgfQp9CmBgYAoKS2V5IGZlYXR1cmVzOgotIERpcmVjdCBhY2Nlc3MgdG8gbzEtcHJldmlldyBtb2RlbAotIFN0cmVhbWluZyBzdXBwb3J0Ci0gVGVtcGVyYXR1cmUgYW5kIHRvcF9wIHBhcmFtZXRlciBjb250cm9sCi0gU3lzdGVtIG1lc3NhZ2UgY29uZmlndXJhdGlvbgoKIyMjIEZsdXggTUNQIFNlcnZlcgoKVGhlIEZsdXggc2VydmVyIHByb3ZpZGVzIGludGVncmF0aW9uIHdpdGggRmx1eCBjYXBhYmlsaXRpZXMgdGhyb3VnaCBNQ1AuCgpgYGBqc29uCnsKICAibWNwU2VydmVycyI6IHsKICAgICJmbHV4IjogewogICAgICAiY29tbWFuZCI6ICJucHgiLAogICAgICAiYXJncyI6IFsiLXkiLCAiQG1vZGVsY29udGV4dHByb3RvY29sL3NlcnZlci1mbHV4Il0sCiAgICAgICJlbnYiOiB7CiAgICAgICAgIkZMVVhfQVBJX0tFWSI6ICI8WU9VUl9GTFVYX0FQSV9LRVk+IgogICAgICB9CiAgICB9CiAgfQp9CmBgYAoKS2V5IGZlYXR1cmVzOgotIFJlYWwtdGltZSBkYXRhIHByb2Nlc3NpbmcKLSBFdmVudCBzdHJlYW1pbmcKLSBCYXRjaCBvcGVyYXRpb25zCi0gQ3VzdG9tIHdvcmtmbG93IGludGVncmF0aW9uCgojIyBVc2FnZQoKMS4gSW5zdGFsbCBkZXBlbmRlbmNpZXM6CmBgYGJhc2gKbnBtIGluc3RhbGwgQG1vZGVsY29udGV4dHByb3RvY29sL3NlcnZlci1vcGVuYWkgQG1vZGVsY29udGV4dHByb3RvY29sL3NlcnZlci1mbHV4CmBgYAoKMi4gU2V0IHVwIGVudmlyb25tZW50IHZhcmlhYmxlcyBpbiB5b3VyIC5lbnYgZmlsZToKYGBgZW52Ck9QRU5BSV9BUElfS0VZPXlvdXJfb3BlbmFpX2tleV9oZXJlCkZMVVhfQVBJX0tFWT15b3VyX2ZsdXhfa2V5X2hlcmUKYGBgCgozLiBTdGFydCB0aGUgc2VydmVycyB1c2luZyB0aGUgY29uZmlndXJhdGlvbnMgYWJvdmUuCgojIyBTZWN1cml0eQoKLSBTdG9yZSBBUEkga2V5cyBzZWN1cmVseQotIFVzZSBlbnZpcm9ubWVudCB2YXJpYWJsZXMgZm9yIHNlbnNpdGl2ZSBkYXRhCi0gRm9sbG93IHNlY3VyaXR5IGJlc3QgcHJhY3RpY2VzIGluIFNFQ1VSSVRZLW1kCgojIyBMaWNlbnNlCgpNSVQgTGljZW5zZSAtIFNlZSBMSUNFTlNFIGZpbGUgZm9yIGRldGFpbHMu
+# MCP Servers - OpenAI and Flux Integration
+
+This repository contains MCP (Model Context Protocol) servers for integrating with OpenAI's o1 model and Flux capabilities.
+
+## Server Configurations
+
+### OpenAI o1 MCP Server
+
+The o1 server enables interaction with OpenAI's o1 preview model through the MCP protocol.
+
+```json
+{
+  "mcpServers": {
+    "openai": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-openai"],
+      "env": {
+        "OPENAI_API_KEY": "<YOUR_OPENAI_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+Key features:
+- Direct access to o1-preview model
+- Streaming support
+- Temperature and top_p parameter control
+- System message configuration
+
+### Flux MCP Server
+
+The Flux server provides integration with Flux capabilities through MCP.
+
+```json
+{
+  "mcpServers": {
+    "flux": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-flux"],
+      "env": {
+        "FLUX_API_KEY": "<YOUR_FLUX_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+Key features:
+- Real-time data processing
+- Event streaming
+- Batch operations
+- Custom workflow integration
+
+## Usage
+
+1. Install dependencies:
+```bash
+npm install @modelcontextprotocol/server-openai @modelcontextprotocol/server-flux
+```
+
+2. Set up environment variables in your .env file:
+```env
+OPENAI_API_KEY=your_openai_key_here
+FLUX_API_KEY=your_flux_key_here
+```
+
+3. Start the servers using the configurations above.
+
+## Security
+
+- Store API keys securely
+- Use environment variables for sensitive data
+- Follow security best practices in SECURITY.md
+
+## License
+
+MIT License - See LICENSE file for details.
