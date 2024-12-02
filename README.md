@@ -47,10 +47,7 @@ The Flux server provides integration with Flux capabilities through MCP.
 ```
 
 Key features:
-- Real-time data processing
-- Event streaming
-- Batch operations
-- Custom workflow integration
+- SOTA Image Model
 
 ## Usage
 
