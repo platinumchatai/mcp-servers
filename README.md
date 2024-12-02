@@ -58,7 +58,6 @@ git clone https://github.com/AllAboutAI-YT/mcp-servers.git
 
 2. Set up environment variables in your .env file:
 ```env
-OPENAI_API_KEY=your_openai_key_here
 FLUX_API_KEY=your_flux_key_here
 ```
 
