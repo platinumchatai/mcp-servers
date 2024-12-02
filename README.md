@@ -36,10 +36,9 @@ The Flux server provides integration with Flux capabilities through MCP.
 {
   "mcpServers": {
     "flux": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-flux"],
+      "command": "flux-server",
       "env": {
-        "FLUX_API_KEY": "<YOUR_FLUX_API_KEY>"
+        "REPLICATE_API_TOKEN": "your-replicate-token"
       }
     }
   }
