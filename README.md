@@ -12,14 +12,14 @@ The o1 server enables interaction with OpenAI's o1 preview model through the MCP
 {
   "mcpServers": {
     "openai": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-openai"],
+      "command": "openai-server",
       "env": {
-        "OPENAI_API_KEY": "<YOUR_OPENAI_API_KEY>"
+        "OPENAI_API_KEY": "apikey"
       }
     }
   }
 }
+
 ```
 
 Key features:
