@@ -54,9 +54,9 @@ Key features:
 
 ## Usage
 
-1. Install dependencies:
+1. Clone or Fork Server
 ```bash
-clone / fork https://github.com/AllAboutAI-YT/mcp-servers.git
+git clone https://github.com/AllAboutAI-YT/mcp-servers.git
 ```
 
 2. Set up environment variables in your .env file:
