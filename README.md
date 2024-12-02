@@ -56,7 +56,7 @@ Key features:
 
 1. Install dependencies:
 ```bash
-npm install @modelcontextprotocol/server-openai @modelcontextprotocol/server-flux
+clone / fork 
 ```
 
 2. Set up environment variables in your .env file:
