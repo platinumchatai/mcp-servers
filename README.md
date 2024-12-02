@@ -56,7 +56,7 @@ Key features:
 
 1. Install dependencies:
 ```bash
-clone / fork 
+clone / fork https://github.com/AllAboutAI-YT/mcp-servers.git
 ```
 
 2. Set up environment variables in your .env file:
