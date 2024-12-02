@@ -358,6 +358,33 @@ export const CreateBranchSchema = RepoParamsSchema.extend({
     .describe("Optional: source branch to create from (defaults to the repository's default branch)")
 });
 
+export const GetIssuesSchema = RepoParamsSchema.extend({
+  state: z.enum(['open', 'closed', 'all']).optional()
+    .describe("Filter issues by state (default: 'open')"),
+  labels: z.array(z.string()).optional()
+    .describe("Filter issues by labels"),
+  since: z.string().optional()
+    .describe("Only show issues updated after this timestamp (ISO 8601 format)"),
+  page: z.number().optional()
+    .describe("Page number for pagination (default: 1)"),
+  perPage: z.number().optional()
+    .describe("Number of issues per page (default: 30, max: 100)")
+});
+
+export const MergePullRequestSchema = RepoParamsSchema.extend({
+  pull_number: z.number().describe("The number of the pull request"),
+  commit_title: z.string().optional()
+    .describe("Title for the automatic commit message"),
+  commit_message: z.string().optional()
+    .describe("Extra detail to append to automatic commit message"),
+  merge_method: z.enum(['merge', 'squash', 'rebase']).optional()
+    .describe("Merge method to use (default: 'merge')")
+});
+
+export const CloseIssueSchema = RepoParamsSchema.extend({
+  issue_number: z.number().describe("The number of the issue to close")
+});
+
 // Export types
 export type GitHubAuthor = z.infer<typeof GitHubAuthorSchema>;
 export type GitHubFork = z.infer<typeof GitHubForkSchema>;
@@ -376,3 +403,5 @@ export type CreatePullRequestOptions = z.infer<typeof CreatePullRequestOptionsSc
 export type CreateBranchOptions = z.infer<typeof CreateBranchOptionsSchema>;
 export type GitHubCreateUpdateFileResponse = z.infer<typeof GitHubCreateUpdateFileResponseSchema>;
 export type GitHubSearchResponse = z.infer<typeof GitHubSearchResponseSchema>;
+export type GetIssuesOptions = z.infer<typeof GetIssuesSchema>;
+export type MergePullRequestOptions = z.infer<typeof MergePullRequestSchema>;

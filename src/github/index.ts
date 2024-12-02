@@ -41,7 +41,10 @@ import {
   CreateIssueSchema,
   CreatePullRequestSchema,
   ForkRepositorySchema,
-  CreateBranchSchema
+  CreateBranchSchema,
+  GetIssuesSchema,
+  MergePullRequestSchema,
+  CloseIssueSchema
 } from './schemas.js';
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
@@ -467,6 +470,94 @@ async function createRepository(
   return GitHubRepositorySchema.parse(await response.json());
 }
 
+async function getIssues(
+  owner: string,
+  repo: string,
+  options: Omit<z.infer<typeof GetIssuesSchema>, 'owner' | 'repo'>
+): Promise<GitHubIssue[]> {
+  const url = new URL(`https://api.github.com/repos/${owner}/${repo}/issues`);
+  
+  // Add query parameters
+  if (options.state) url.searchParams.append("state", options.state);
+  if (options.labels) url.searchParams.append("labels", options.labels.join(','));
+  if (options.since) url.searchParams.append("since", options.since);
+  if (options.page) url.searchParams.append("page", options.page.toString());
+  if (options.perPage) url.searchParams.append("per_page", options.perPage.toString());
+
+  const response = await fetch(url.toString(), {
+    headers: {
+      "Authorization": `token ${GITHUB_PERSONAL_ACCESS_TOKEN}`,
+      "Accept": "application/vnd.github.v3+json",
+      "User-Agent": "github-mcp-server"
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`GitHub API error: ${response.statusText}`);
+  }
+
+  const issues = await response.json();
+  return z.array(GitHubIssueSchema).parse(issues);
+}
+
+async function mergePullRequest(
+  owner: string,
+  repo: string,
+  options: z.infer<typeof MergePullRequestSchema>
+): Promise<GitHubPullRequest> {
+  const response = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/pulls/${options.pull_number}/merge`,
+    {
+      method: "PUT",
+      headers: {
+        "Authorization": `token ${GITHUB_PERSONAL_ACCESS_TOKEN}`,
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "github-mcp-server",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        commit_title: options.commit_title,
+        commit_message: options.commit_message,
+        merge_method: options.merge_method || 'merge'
+      })
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`GitHub API error: ${response.statusText}`);
+  }
+
+  return GitHubPullRequestSchema.parse(await response.json());
+}
+
+async function closeIssue(
+  owner: string,
+  repo: string,
+  options: Omit<z.infer<typeof CloseIssueSchema>, 'owner' | 'repo'>
+): Promise<GitHubIssue> {
+  const response = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/issues/${options.issue_number}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Authorization": `token ${GITHUB_PERSONAL_ACCESS_TOKEN}`,
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "github-mcp-server",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        state: "closed"
+      })
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`GitHub API error: ${response.statusText}`);
+  }
+
+  return GitHubIssueSchema.parse(await response.json());
+}
+
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
@@ -514,6 +605,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         name: "create_branch",
         description: "Create a new branch in a GitHub repository",
         inputSchema: zodToJsonSchema(CreateBranchSchema)
+      },
+      {
+        name: "get_issues",
+        description: "Get issues from a GitHub repository",
+        inputSchema: zodToJsonSchema(GetIssuesSchema)
+      },
+      {
+        name: "merge_pull_request",
+        description: "Merge a pull request in a GitHub repository",
+        inputSchema: zodToJsonSchema(MergePullRequestSchema)
+      },
+      {
+        name: "close_issue",
+        description: "Close an existing issue in a GitHub repository",
+        inputSchema: zodToJsonSchema(CloseIssueSchema)
       }
     ]
   };
@@ -621,6 +727,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const { owner, repo, ...options } = args;
         const pullRequest = await createPullRequest(owner, repo, options);
         return { toolResult: pullRequest };
+      }
+
+      case "get_issues": {
+        const args = GetIssuesSchema.parse(request.params.arguments);
+        const { owner, repo, ...options } = args;
+        const issues = await getIssues(owner, repo, options);
+        return { toolResult: issues };
+      }
+
+      case "merge_pull_request": {
+        const params = MergePullRequestSchema.parse(request.params.arguments);
+        const result = await mergePullRequest(params.owner, params.repo, params);
+        return { toolResult: result };
+      }
+
+      case "close_issue": {
+        const args = CloseIssueSchema.parse(request.params.arguments);
+        const { owner, repo, ...options } = args;
+        const issue = await closeIssue(owner, repo, options);
+        return { toolResult: issue };
       }
 
       default:
